@@ -4,11 +4,24 @@ const express = require('express'),
 const app = express();
     port = process.env.PORT || 3000
 
+    const dotenv = require('dotenv'),
+    { Client } = require('pg')
+    dotenv.config()
+    const client = new Client({
+        connectionString: process.env.PGURI
+      })
+      
+      client.connect()
 
 //kommer åt backend
-app.get('/api', (req, res) => {
-    res.send({ hello: 'World' });
-})
+app.get('/api', async (_request, response) => {
+    const { rows } = await client.query(
+      'SELECT * FROM cities WHERE name = $1',
+      ['Stockholm']
+    )
+  
+    response.send(rows)
+  })
 //kommer åt frontend
 app.use(express.static(path.join(path.resolve(), 'public')))
 
