@@ -13,16 +13,21 @@ const app = express();
       
       client.connect()
 
-//kommer åt backend
-app.get('/api', async (_request, response) => {
-    const { rows } = await client.query(
-      'SELECT * FROM cities WHERE name = $1',
-      ['Stockholm']
-    )
-  
-    response.send(rows)
-  })
-//kommer åt frontend
+
+app.get('/api/exercises/:category', async (request, response) => {
+    const category = request.params.category;
+    try {
+      const { rows } = await client.query(
+        'SELECT * FROM exercise WHERE category = $1',
+        [category]
+      );
+      response.json(rows);
+    } catch (error) {
+      console.error(error);
+      response.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+
 app.use(express.static(path.join(path.resolve(), 'public')))
 
 
