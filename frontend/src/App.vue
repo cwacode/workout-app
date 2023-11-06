@@ -1,45 +1,50 @@
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <h1>Workout</h1>
+  <header>
+    <nav>
+      <button v-for="category in categories" :key="category" @click="fetchExercises(category)">
+        {{ category }}
+      </button>
+    </nav>
+  </header>
+  <div v-if="selectedExercise">
+    <h2>{{ selectedExercise.exercise }}</h2>
+    <p>{{ selectedExercise.description }}</p>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <script>
-import { onMounted } from 'vue';
+import { ref } from 'vue';
 
 export default {
   setup() {
-    onMounted(() => {
-      fetch('/api')
+    const categories = ref(['Back', 'Shoulders', 'Legs', 'Chest', 'Abs']);
+    const selectedExercise = ref(null);
+
+    function fetchExercises(category) {
+      fetch(`/api/exercises/${category}`)
         .then((response) => response.json())
-        .then((result) => {
-          alert(`Hello ${result.hello}!`);
+        .then((exercises) => {
+          selectedExercise.value = exercises[0];
+        })
+        .catch((error) => {
+          console.error('Error fetching exercises:', error);
         });
-    });
+    }
+
+    return {
+      categories,
+      selectedExercise,
+      fetchExercises
+    };
   },
 };
 </script>
 
 
 
-
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+header {
+  height: 50px;
 }
 </style>
