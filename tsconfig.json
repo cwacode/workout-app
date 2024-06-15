@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "esnext",               // Ange ECMAScript-målversion
+    "module": "NodeNext",               // Ange modulsystemet
+    "moduleResolution": "nodenext",       // Modulupplösning
+    "lib": ["dom", "esnext"],         // Librarier som ska inkluderas
+    "esModuleInterop": true,          // Tillåter default-importer från moduler utan ES6 default export
+    "strict": true,                   // Aktiverar strikta typkontroller
+    "jsx": "preserve",                // Nödvändigt för Vue-filer
+    "sourceMap": true,                // Generera källkartor
+    "baseUrl": ".",                   // Bas-URL för relativ vägupplösning
+    "paths": {                        // Alias för att importera moduler
+      "@/*": ["./src/*"]
+    },
+    "resolveJsonModule": true,        // Tillåter import av JSON-filer
+    "experimentalDecorators": true,   // Aktiverar stöd för decorators
+    "allowSyntheticDefaultImports": true // Tillåter standardimporter från moduler utan ES6 default export
+  },
+  "exclude": ["node_modules"],
+  "include": [
+    "./frontend/src/**/*.ts",
+    "./frontend/src/**/*.tsx",
+    "./frontend/src/**/*.vue"
+  ],
+}
